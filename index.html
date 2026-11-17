@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MD-Flourish Bakery — Fresh Pastries & Drinks in Ibadan</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="logo">
+      <i class="fa-solid fa-cookie-bite"></i> <i>MD-Flourish Bakery</i>
+    </div>
+
+    <button class="cart-btn" id="openCartBtn">
+      <i class="fa-solid fa-cart-shopping"></i> Cart <span class="cart-badge" id="cartBadge">0</span>
+    </button>
+  </nav>
+
+    <!-- Hero Section with Fading Background Slider -->
+    <section class="hero">
+      <div class="hero-content">
+        <h1>Fresh Pastries & Crunchy Snacks Delivered Fast!</h1>
+        <p>Order delicious Meat Pies, Cakes, Chin-Chin, and Parfait Yogurt in Ibadan.</p>
+        <a href="#menu" class="btn-primary">Order Now</a>
+        <button id="openEventBtnModal" class="btn-event-order">Book a Cutom Cake</button>
+      </div>
+    </section>
+
+    <!-- Offer section -->
+    <section class="flash-sales-container">
+      <!-- Header & Timer Row -->
+      <div class="flash-header-top">
+        <div class="flash-title-area">
+          <h2>Special Offers & Flash Sales</h2>
+        </div>
+        <button class="see-all-btn" id="seeAllBtn">See All →</button>
+      </div>
+
+      <!-- Carousel Track (Empty, ready for dynamic data insertion) -->
+      <div class="flash-deals-track" id="flashDealsTrack">
+        <!-- Dynamic deal cards will be injected here via JavaScript -->
+
+      </div>
+      <button class="carousel-arrow prev-arrow" onclick="moveCarousel(-1)">&#10094;</button>
+      <button class="carousel-arrow next-arrow" onclick="moveCarousel(1)">&#10095;</button>
+    </section>
+
+    <!-- Main Snack Menu -->
+    <section class="menu-section" id="menu">
+      <h2>Our Menu</h2>
+      
+      <!-- Filter Pills -->
+      <div class="category-pills">
+        <button class="pill active" data-category="all">All</button>
+        <button class="pill" data-category="Pastries">Pastries (Pies/Cakes)</button>
+        <button class="pill" data-category="Crunchy">Crunchy (Chin-Chin)</button>
+        <button class="pill" data-category="Drinks">Drinks (Yogurt)</button>
+      </div>
+
+      <!-- Dynamic Product Cards -->
+      <div class="products-grid" id="productsGrid"></div>
+    </section>
+
+    <!-- Shopping Cart Sidebar Drawer -->
+    <div class="cart-overlay" id="cartOverlay">
+      <aside class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+          <h3>Your Basket</h3>
+          <button class="close-modal" id="closeCartBtn">&times;</button>
+        </div>
+    
+        <div class="cart-items" id="cartItemsContainer"></div>
+    
+        <div class="cart-footer">
+          <div style="display:flex; justify-content:space-between; margin-bottom:1rem; font-weight:bold;">
+            <span>Total Amount:</span>
+            <span id="cartTotalAmount">₦0</span>
+          </div>
+          <button class="btn-checkout" id="openCheckoutBtn">Proceed to Checkout</button>
+        </div>
+      </aside>
+    </div>
+
+    <!-- Checkout & Bank Transfer Modal -->
+    <div class="modal-overlay" id="checkoutModal">
+      <div class="modal-content">
+        <button class="close-modal" id="closeModalBtn">&times;</button>
+        <h3>Complete Your Order</h3>
+        <p style="font-size: 0.85rem; color: #64748b; margin-top: 4px;">Make a transfer to complete payment, then submit to notify via WhatsApp.</p>
+
+        <div class="bank-box">
+          <strong>Bank:</strong> OPAY<br>
+          <strong>Account Name:</strong> Madamidola Fathia O.<br>
+          <strong>Account No:</strong> 9158555361 
+          <button class="btn-copy" id="copyAccBtn">Copy</button>
+        </div>
+
+        <form id="checkoutForm">
+          <!-- Fulfillment Options -->
+          <label>Fulfillment Method:</label>
+          <div class="fulfillment-options">
+            <button type="button" class="option-btn active" id="btnPickup">
+              Store Pickup (Free)
+            </button>
+            <button type="button" class="option-btn" id="btnDelivery">
+              Home Delivery
+            </button>
+          </div>
+
+          <label>Your Full Name</label>
+          <input type="text" id="custName" placeholder="e.g. Adebayo Kunle" required>
+
+          <label>Phone Number</label>
+          <input type="tel" id="custPhone" placeholder="08012345678" required>
+
+          <!-- Delivery Address Group (Hidden by default for Pickup) -->
+          <div id="addressContainer" class="hidden">
+            <label>Delivery Address in Ibadan</label>
+            <textarea id="custAddress" rows="2" placeholder="Street, area name, landmark..."></textarea>
+          </div>
+
+          <label>Sender Account Name (for Transfer Verification)</label>
+          <input type="text" id="senderName" placeholder="Name on bank app" required>
+
+          <button type="submit" class="btn-whatsapp" id="btnWhatsapp">
+            <i class="fa-brands fa-whatsapp"></i> Send Order on WhatsApp
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Event order Modal -->
+    <div class="event-modal-overlay hidden" id="eventModal">
+      <div class="event-modal-content">
+        <span id="eventCloseModalBtn" class="close-btn">&times;</span>
+
+        <div class="modal-header-banner">
+          <h2>Special Event Cake Booking</h2>
+          <p>Tell us about your event, let's make it delicious!</p>
+        </div>
+  
+        <form id="eventOrderForm">
+          <div class="form-group">
+            <label for="eventTypeName">Your Name:</label>
+            <input type="text" id="eventTypeName" placeholder="e.g Mrs. Adebayo" required>
+          </div>
+  
+          <div class="form-group">
+            <label for="eventType">Event Type:</label>
+            <select id="eventType" required>
+              <option value="">Select Event...</option>
+              <option value="Wedding">Wedding</option>
+              <option value="Birthday">Birthday</option>
+              <option value="Anniversary">Anniversary</option>
+              <option value="Corporate Event">Corporate Event</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="eventDate">Event Time</label>
+            <input type="date" id="eventDate" required>
+          </div>
+
+          <div class="form-group">
+            <label for="custPhone">Phone / WhatsApp</label>
+            <input type="tel" id="custPhone" class="phone" placeholder="+234..." required>
+          </div>
+
+          <div class="form-group">
+            <label for="custEmail">Email</label>
+            <input type="email" id="custEmail" placeholder="you@example.com" required>
+          </div>
+
+          <div class="form-group">
+            <label for="eventGuests">Estimated Guests / Cake Size:</label>
+            <input type="text" id="eventGuests" placeholder="e.g. 50 guests / 3-tier cake" required>
+          </div>
+
+          <div class="form-group">
+            <label for="eventNotes">Additional Details / Flavor Preferences:</label>
+            <textarea id="eventNotes" placeholder="Chocolate Flavour, color theme, special message..." rows="3"></textarea>
+          </div>
+
+          <button type="submit" class="whatsapp-submit-btn" id="eventWhatsappOrder">Send Event Order on Whatsapp</button>
+        </form>
+      </div>
+    </div>
+
+
+
+  <!-- About section -->
+  <section class="page-section about-section" id="about">
+    <div class="container">
+      <h2>About Us</h2>
+      <p class="about-text">Freshly baked snacks & refreshing yogurt crafted with love in Ibadan.</p>
+    </div>
+        <!-- Testimoinal Carousel Section -->
+        <section class="carousel-section">
+          <div class="carousel-header">
+            <h2>What Our Customer's Say</h2>
+          </div>
+          <div class="carousel-wrapper">
+            <!-- left arrow btn -->
+            <button class="carousel-arrow prev-arrow" onclick="moveCarousel(-1)">&#10094;</button>
+            <!-- carousel card -->
+            <div class="carousel-track-container">
+              <div class="carousel-track" id="testimonial-card">
+                <!-- Dynamic Card will be loaded -->
+    
+              </div>
+            </div>
+            <!-- Right Arrow btn -->
+            <button class="carousel-arrow next-arrow" onclick="moveCarousel(1)">&#10095;</button>
+          </div>
+        </section>
+  </section>
+  <!-- Order your cake section -->
+  <section class="page-section order-section" id="cutom-orders">
+      <div class="container">
+        <span class="sub-heading">ORDER YOUR CAKE</span>
+        <h2>Let's Bake Something Memoriable</h2>
+        <p>Tell us what you're celebrating and we'll help you design the perfect bake. We'll get back to you within 24 hours to confirm your order.</p>
+          <div class="action-cards">
+            <a href="https://wa.me/2349158555361" class="action-card" target="_blank">
+              <i class="fa-brands fa-whatsapp"></i>
+              <div>
+                <strong>Chat on WhatsApp</strong>
+                <span>+234 915 855 5361</span>
+              </div>
+            </a>
+
+              <a href="https://instagram.com/md_flourish_bakehouse" class="action-card" target="_blank">
+                <i class="fa-brands fa-instagram"></i>
+                <div>
+                  <strong>Follow on Instagram</strong>
+                  <span>@md_flourish_bakehouse</span>
+                </div>
+              </a>
+          </div>
+      </div>
+  </section>
+
+  <!-- contact and visit us section -->
+  <section id="contact" class="page-section contact-section">
+      <div class="container">
+        <h3>GET IN TOUCH</h3>
+        <ul class="contact-list">
+          <li><i class="fa-solid fa-phone"></i>+234 915 855 5361</li>
+          <li><i class="fa-solid fa-envelope"></i>fathiamadamiddola9@gmail.com</li>
+          <li><i class="fa-brands fa-instagram"></i>@md_flourish_bakehouse</li>
+        </ul>
+
+        <h3>ViSIT US</h3>
+        <p>Apata, Ibadan 200116, oyo, Nigeria</p>
+        <a href="https://maps.google.com" target="_blank" class="btn-outlines">Open in Google Maps</a>
+      </div>
+  </section>
+
+  <!-- footer -->
+  <footer>
+    <p>&copy; <span id="currentYear"></span> MD Flourish Bakehouse. All rights reserved.</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard — Delish Bites</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="admin-body">
+
+  <!-- Admin Register Screen -->
+  <div class="login-container" id="registerScreen">
+    <form class="login-card" id="registerForm">
+      <h2><i class="fa-solid fa-lock"></i> Admin Registration</h2>
+      <input type="text" id="reqUserName" placeholder="Admin Username" required>
+      <input type="email" id="adminEmail" placeholder="Admin Email" required value="admin@mdflourish.com">
+      <input type="password" id="adminPass" placeholder="Password" required value="admin123">
+      <input type="text" id="regSecretPhrase" placeholder="my secret phrase" required>
+      <button type="submit" class="btn-primary">Register Account</button>
+      <p style="margin-top: 15px; text-align: center; font-size: 0.9rem;">Already registered? <a href="#" id="showLogin">Login Here</a></p>
+    </form>
+  </div>
+
+  <!-- Admin Login Screen -->
+
+  <div class="login-container hidden" id="loginScreen">
+    <form class="login-card" id="loginForm">
+      <h2><i class="fa-solid fa-lock"></i>Admin Login</h2>
+      <input type="email" id="loginEmail" placeholder="Admin Email" required>
+      <input type="password" id="loginPass" placeholder="Password" required>
+      <button type="submit" class="btn-primary">Login to Dashboard</button>
+      <p style="margin-top: 15px; text-align: center; font-size: 0.85rem;"><a href="#" id="showReset">Forget Password?</a></p>
+    </form>
+  </div>
+
+  <!-- Reset Screen -->
+  <div class="login-container hidden" id="resetScreen">
+    <form class="login-card" id="resetForm">
+      <h2><i class="fa-solid fa-key"></i>Reset Password</h2>
+      <input type="email" id="resetEmail" placeholder="Admin Email" required>
+      <input type="text" id="resetSecretPhrase" placeholder="Your Secret Recovery Phrase" required>
+      <input type="password" id="newPassword" placeholder="New Password" required>
+      <button type="submit" class="btn-primary">Update Password</button>
+      <p style="margin-top: 15px; text-align: center; font-size: 0.9rem;">Remembered Your Password? <a href="#" id="backToLogin">Login Here</a></p>
+    </form>
+  </div>
+
+  <!-- Admin Panel Container -->
+  <div class="admin-wrapper hidden" id="adminDashboard">
+    <header class="admin-header">
+      <h2>MD-Flourish Bakery Dashboard</h2>
+      <div>
+        <a href="index.html" class="btn-outline"><i class="fa-solid fa-store"></i> View Store</a>
+        <button id="logoutBtn" class="btn-danger">Logout</button>
+        <div class="toggle-container">
+          <input type="checkbox" class="toggles-btn" id="toggleBtn">
+        </div>
+      </div>
+    </header>
+
+    <main class="admin-content">
+      <!-- Analytics Widgets -->
+      <section class="stats-grid">
+        <div class="stat-card">
+          <i class="fa-solid fa-money-bill-wave"></i>
+          <div>
+            <h3>Today's Revenue</h3>
+            <p id="statSales">₦0</p>
+          </div>
+        </div>
+        <div class="stat-card">
+          <i class="fa-solid fa-bag-shopping"></i>
+          <div>
+            <h3>Total Orders</h3>
+            <p id="statOrders">0</p>
+          </div>
+        </div>
+        <div class="stat-card">
+          <i class="fa-solid fa-clock"></i>
+          <div>
+            <h3>Pending Confirmations</h3>
+            <p id="statPending">0</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Manage Products Section -->
+      <section class="admin-section">
+        <div class="section-header">
+          <h3>Manage Snack Menu</h3>
+          <button class="btn-primary" id="openAddProductBtn">+ Add New Snack</button>
+        </div>
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Image</th>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Price</th>
+                <th>Stock Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="adminProductsTable"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Manage Special Offers Section -->
+      <section class="admin-section">
+        <div class="section-header">
+          <h3>Manage Special Offers & Combos</h3>
+          <button class="btn-primary" id="openAddOfferBtn">+ Add Special Offer</button>
+        </div>
+
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Image</th>
+                <th>Category</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Stock</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="adminOffersTable"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Manage Event Order -->
+      <section class="admin-section">
+        <div class="section-header">
+          <h3>Event Pre-Orders</h3>
+        </div>
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Customer Name</th>
+                <th>Event Type</th>
+                <th>Event Date</th>
+                <th>Phone / WhatsApp</th>
+                <th>Details & size</th>
+                <th>Status</th>
+                <th>Fulfill Action</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="adminEventOrderTable"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Manage Orders Section -->
+      <section class="admin-section">
+        <h3>Recent Customer Orders</h3>
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Customer</th>
+                <th>Items</th>
+                <th>Total</th>
+                <th>Sender Name</th>
+                <th>Status</th>
+                <th>Fulfill Action</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="adminOrdersTable"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Add Product Modal -->
+  <div class="modal-overlay" id="productModal">
+    <div class="modal-content">
+      <button class="close-modal" id="closeProdModal">&times;</button>
+      <h3>Add New Menu Item</h3>
+      <form id="addProductForm">
+        <label>Snack Name</label>
+        <input type="text" id="pName" required placeholder="e.g. Meat Pie">
+
+        <label>Category</label>
+        <select id="pCategory">
+          <option value="Pastries">Pastries</option>
+          <option value="Crunchy">Crunchy</option>
+          <option value="Drinks">Drinks</option>
+        </select>
+
+        <label>Price (₦)</label>
+        <input type="number" id="pPrice" required placeholder="1200">
+
+        <label>Image URL or Local File</label>
+          <input type="url" id="pImg" accept="Image/*" required placeholder="paste URL or click to upload">
+          <button type="button" id="plusIconBtn">+</button>
+        <button type="submit" class="btn-primary">Save Snack</button>
+      </form>
+    </div>
+  </div>
+
+<!-- Add Special Offer Modal -->
+<div class="modal-overlay" id="offerModal">
+  <div class="modal-content">
+    <button class="close-modal" id="closeOfferModal">&times;</button>
+    <h3>Add New Special Offer</h3>
+    
+    <form id="addOfferForm">
+      <label>Description</label>
+      <input type="text" id="oDesc" required placeholder="e.g. Buy 2 Meat Pies + 1 Parfait Yogurt">
+
+      <label>Combo Price (₦)</label>
+      <input type="number" id="oPrice" readonly style="background-color: #f0f0f0; cursor: not-allowed;">
+
+      <label>Original Price (₦)</label>
+      <input type="number" id="oOriginalPrice" placeholder="5000">
+
+      <label>Discount Percentage (%)</label>
+      <input type="number" id="oDiscount" placeholder="20" required oninput="calculateComboPrice()">
+
+      <label>Image URL / Path</label>
+      <input type="url" id="oImage" accept="Image/*" required placeholder="paste URL or click to upload">
+      <button type="button" id="plusIconBtns">+</button>
+
+      <label>Stock Left</label>
+      <input type="number" id="oStockLeft" placeholder="4">
+
+      <label>Total Stock</label>
+      <input type="number" id="oTotalStock" placeholder="20">
+      <!-- ----------------------------------------------------------- -->
+
+      <button type="submit" class="btn-primary">Save Offer</button>
+    </form>
+  </div>
+</div>
+
+  <script src="app.js"></script>
+</body>
+</html>
