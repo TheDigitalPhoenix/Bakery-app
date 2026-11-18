@@ -382,4 +382,5 @@ app.delete('/api/event-orders/:id', async(req, res) => {
     }
 });
 
-app.listen(3001, () => {console.log('app listening')});
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {console.log(`Server running on Port ${PORT}`)});
